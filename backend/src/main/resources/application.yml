@@ -1,11 +1,14 @@
 spring:
+  config:
+    import: optional:file:../.env[.properties]
+    
   application:
     name: shiftplanner
 
   datasource:
-    url: jdbc:postgresql://localhost:5433/shiftplanner
-    username: shiftplanner
-    password: shiftplanner
+    url: ${DB_URL:jdbc:postgresql://localhost:${DB_PORT:5433}/${DB_NAME:shiftplanner}}
+    username: ${DB_USER:shiftplanner}
+    password: ${DB_PASSWORD:shiftplanner}
 
   jpa:
     hibernate:
