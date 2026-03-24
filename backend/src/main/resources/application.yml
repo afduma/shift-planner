@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: shiftplanner
+
+  datasource:
+    url: jdbc:postgresql://localhost:5433/shiftplanner
+    username: shiftplanner
+    password: shiftplanner
+
+  jpa:
+    hibernate:
+      ddl-auto: update
