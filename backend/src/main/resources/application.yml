@@ -1,7 +1,7 @@
 spring:
   config:
     import: optional:file:../.env[.properties]
-    
+
   application:
     name: shiftplanner
 
@@ -12,4 +12,14 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
+    open-in-view: false
+
+  flyway:
+    enabled: true
+
+shiftplanner:
+  security:
+    jwt:
+      secret: ${JWT_SECRET}
+      expiration-seconds: ${JWT_EXPIRATION_SECONDS:3600}
