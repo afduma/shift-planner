@@ -1,0 +1,13 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+  flyway:
+    enabled: true
+
+shiftplanner:
+  security:
+    jwt:
+      secret: test-secret-key-test-secret-key-1234
+      expiration-seconds: 3600

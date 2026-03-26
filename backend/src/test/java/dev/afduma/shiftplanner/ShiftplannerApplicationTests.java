@@ -1,10 +1,9 @@
 package dev.afduma.shiftplanner;
 
+import dev.afduma.shiftplanner.support.IntegrationTest;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class ShiftplannerApplicationTests {
+class ShiftplannerApplicationTests extends IntegrationTest {
 
   @Test
   void contextLoads() {}
