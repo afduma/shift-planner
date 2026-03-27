@@ -6,6 +6,10 @@ import dev.afduma.shiftplanner.team.dto.TeamResponse;
 import dev.afduma.shiftplanner.team.dto.UpdateTeamRequest;
 import dev.afduma.shiftplanner.team.mapper.TeamMapper;
 import dev.afduma.shiftplanner.team.service.TeamService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.List;
@@ -22,6 +26,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/teams")
+@Tag(name = "Teams")
+@SecurityRequirement(name = "bearerAuth")
 public class TeamController {
 
   private final TeamService teamService;
@@ -33,16 +39,18 @@ public class TeamController {
   }
 
   @PostMapping
+  @Operation(summary = "Create a team")
   public ResponseEntity<TeamResponse> create(
-      @AuthenticationPrincipal AuthenticatedUser authenticatedUser,
+      @Parameter(hidden = true) @AuthenticationPrincipal AuthenticatedUser authenticatedUser,
       @Valid @RequestBody CreateTeamRequest request) {
     TeamResponse response = teamMapper.toResponse(teamService.create(authenticatedUser, request));
     return ResponseEntity.created(URI.create("/api/teams/" + response.id())).body(response);
   }
 
   @GetMapping
+  @Operation(summary = "List visible teams")
   public ResponseEntity<List<TeamResponse>> getTeams(
-      @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
+      @Parameter(hidden = true) @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
     List<TeamResponse> response =
         teamService.getVisibleTeams(authenticatedUser).stream()
             .map(teamMapper::toResponse)
@@ -51,15 +59,18 @@ public class TeamController {
   }
 
   @GetMapping("/{id}")
+  @Operation(summary = "Get a team by id")
   public ResponseEntity<TeamResponse> getTeam(
-      @AuthenticationPrincipal AuthenticatedUser authenticatedUser, @PathVariable UUID id) {
+      @Parameter(hidden = true) @AuthenticationPrincipal AuthenticatedUser authenticatedUser,
+      @PathVariable UUID id) {
     return ResponseEntity.ok(
         teamMapper.toResponse(teamService.getVisibleTeamById(authenticatedUser, id)));
   }
 
   @PutMapping("/{id}")
+  @Operation(summary = "Update a team")
   public ResponseEntity<TeamResponse> update(
-      @AuthenticationPrincipal AuthenticatedUser authenticatedUser,
+      @Parameter(hidden = true) @AuthenticationPrincipal AuthenticatedUser authenticatedUser,
       @PathVariable UUID id,
       @Valid @RequestBody UpdateTeamRequest request) {
     return ResponseEntity.ok(

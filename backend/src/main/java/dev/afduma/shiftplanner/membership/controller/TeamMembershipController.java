@@ -6,6 +6,10 @@ import dev.afduma.shiftplanner.membership.dto.TeamMembershipResponse;
 import dev.afduma.shiftplanner.membership.dto.UpdateTeamMembershipRequest;
 import dev.afduma.shiftplanner.membership.mapper.TeamMembershipMapper;
 import dev.afduma.shiftplanner.membership.service.TeamMembershipService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.List;
@@ -23,6 +27,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping
+@Tag(name = "Memberships")
+@SecurityRequirement(name = "bearerAuth")
 public class TeamMembershipController {
 
   private final TeamMembershipService teamMembershipService;
@@ -35,8 +41,9 @@ public class TeamMembershipController {
   }
 
   @PostMapping("/api/teams/{teamId}/memberships")
+  @Operation(summary = "Create a team membership")
   public ResponseEntity<TeamMembershipResponse> create(
-      @AuthenticationPrincipal AuthenticatedUser authenticatedUser,
+      @Parameter(hidden = true) @AuthenticationPrincipal AuthenticatedUser authenticatedUser,
       @PathVariable UUID teamId,
       @Valid @RequestBody CreateTeamMembershipRequest request) {
     TeamMembershipResponse response =
@@ -47,8 +54,10 @@ public class TeamMembershipController {
   }
 
   @GetMapping("/api/teams/{teamId}/memberships")
+  @Operation(summary = "List memberships for a team")
   public ResponseEntity<List<TeamMembershipResponse>> getTeamMemberships(
-      @AuthenticationPrincipal AuthenticatedUser authenticatedUser, @PathVariable UUID teamId) {
+      @Parameter(hidden = true) @AuthenticationPrincipal AuthenticatedUser authenticatedUser,
+      @PathVariable UUID teamId) {
     List<TeamMembershipResponse> response =
         teamMembershipService.getTeamMemberships(authenticatedUser, teamId).stream()
             .map(teamMembershipMapper::toResponse)
@@ -57,8 +66,10 @@ public class TeamMembershipController {
   }
 
   @GetMapping("/api/users/{userId}/memberships")
+  @Operation(summary = "List memberships for a user")
   public ResponseEntity<List<TeamMembershipResponse>> getUserMemberships(
-      @AuthenticationPrincipal AuthenticatedUser authenticatedUser, @PathVariable UUID userId) {
+      @Parameter(hidden = true) @AuthenticationPrincipal AuthenticatedUser authenticatedUser,
+      @PathVariable UUID userId) {
     List<TeamMembershipResponse> response =
         teamMembershipService.getUserMemberships(authenticatedUser, userId).stream()
             .map(teamMembershipMapper::toResponse)
@@ -67,8 +78,9 @@ public class TeamMembershipController {
   }
 
   @PutMapping("/api/teams/{teamId}/memberships/{membershipId}")
+  @Operation(summary = "Update a team membership")
   public ResponseEntity<TeamMembershipResponse> update(
-      @AuthenticationPrincipal AuthenticatedUser authenticatedUser,
+      @Parameter(hidden = true) @AuthenticationPrincipal AuthenticatedUser authenticatedUser,
       @PathVariable UUID teamId,
       @PathVariable UUID membershipId,
       @Valid @RequestBody UpdateTeamMembershipRequest request) {
@@ -78,8 +90,9 @@ public class TeamMembershipController {
   }
 
   @DeleteMapping("/api/teams/{teamId}/memberships/{membershipId}")
+  @Operation(summary = "Delete a team membership")
   public ResponseEntity<Void> delete(
-      @AuthenticationPrincipal AuthenticatedUser authenticatedUser,
+      @Parameter(hidden = true) @AuthenticationPrincipal AuthenticatedUser authenticatedUser,
       @PathVariable UUID teamId,
       @PathVariable UUID membershipId) {
     teamMembershipService.delete(authenticatedUser, teamId, membershipId);

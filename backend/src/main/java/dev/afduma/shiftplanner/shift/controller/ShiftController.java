@@ -6,6 +6,10 @@ import dev.afduma.shiftplanner.shift.dto.ShiftResponse;
 import dev.afduma.shiftplanner.shift.dto.UpdateShiftRequest;
 import dev.afduma.shiftplanner.shift.mapper.ShiftMapper;
 import dev.afduma.shiftplanner.shift.service.ShiftService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.net.URI;
 import java.time.Instant;
@@ -25,6 +29,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/shifts")
+@Tag(name = "Shifts")
+@SecurityRequirement(name = "bearerAuth")
 public class ShiftController {
 
   private final ShiftService shiftService;
@@ -36,22 +42,26 @@ public class ShiftController {
   }
 
   @PostMapping
+  @Operation(summary = "Create a shift")
   public ResponseEntity<ShiftResponse> create(
-      @AuthenticationPrincipal AuthenticatedUser authenticatedUser,
+      @Parameter(hidden = true) @AuthenticationPrincipal AuthenticatedUser authenticatedUser,
       @Valid @RequestBody CreateShiftRequest request) {
     ShiftResponse response = shiftMapper.toResponse(shiftService.create(authenticatedUser, request));
     return ResponseEntity.created(URI.create("/api/shifts/" + response.id())).body(response);
   }
 
   @GetMapping("/{id}")
+  @Operation(summary = "Get a shift by id")
   public ResponseEntity<ShiftResponse> getById(
-      @AuthenticationPrincipal AuthenticatedUser authenticatedUser, @PathVariable UUID id) {
+      @Parameter(hidden = true) @AuthenticationPrincipal AuthenticatedUser authenticatedUser,
+      @PathVariable UUID id) {
     return ResponseEntity.ok(shiftMapper.toResponse(shiftService.getVisibleById(authenticatedUser, id)));
   }
 
   @GetMapping
+  @Operation(summary = "Search shifts")
   public ResponseEntity<List<ShiftResponse>> search(
-      @AuthenticationPrincipal AuthenticatedUser authenticatedUser,
+      @Parameter(hidden = true) @AuthenticationPrincipal AuthenticatedUser authenticatedUser,
       @RequestParam(required = false) UUID teamId,
       @RequestParam(required = false) UUID userId,
       @RequestParam(required = false) Instant from,
@@ -64,16 +74,19 @@ public class ShiftController {
   }
 
   @PutMapping("/{id}")
+  @Operation(summary = "Update a shift")
   public ResponseEntity<ShiftResponse> update(
-      @AuthenticationPrincipal AuthenticatedUser authenticatedUser,
+      @Parameter(hidden = true) @AuthenticationPrincipal AuthenticatedUser authenticatedUser,
       @PathVariable UUID id,
       @Valid @RequestBody UpdateShiftRequest request) {
     return ResponseEntity.ok(shiftMapper.toResponse(shiftService.update(authenticatedUser, id, request)));
   }
 
   @DeleteMapping("/{id}")
+  @Operation(summary = "Delete a shift")
   public ResponseEntity<Void> delete(
-      @AuthenticationPrincipal AuthenticatedUser authenticatedUser, @PathVariable UUID id) {
+      @Parameter(hidden = true) @AuthenticationPrincipal AuthenticatedUser authenticatedUser,
+      @PathVariable UUID id) {
     shiftService.delete(authenticatedUser, id);
     return ResponseEntity.noContent().build();
   }
