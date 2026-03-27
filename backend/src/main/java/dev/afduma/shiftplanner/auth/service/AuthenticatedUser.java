@@ -28,6 +28,10 @@ public class AuthenticatedUser implements UserDetails {
     return userId;
   }
 
+  public String getSystemRole() {
+    return systemRole;
+  }
+
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
     return List.of(new SimpleGrantedAuthority("ROLE_" + systemRole));
