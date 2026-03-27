@@ -16,8 +16,6 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.UUID;
 
 @Entity
@@ -37,13 +35,10 @@ public class Shift {
   private Team team;
 
   @Column(nullable = false)
-  private LocalDate shiftDate;
+  private Instant startAt;
 
   @Column(nullable = false)
-  private LocalTime startTime;
-
-  @Column(nullable = false)
-  private LocalTime endTime;
+  private Instant endAt;
 
   @Enumerated(EnumType.STRING)
   @Column(nullable = false, length = 20)
@@ -90,28 +85,20 @@ public class Shift {
     this.team = team;
   }
 
-  public LocalDate getShiftDate() {
-    return shiftDate;
+  public Instant getStartAt() {
+    return startAt;
   }
 
-  public void setShiftDate(LocalDate shiftDate) {
-    this.shiftDate = shiftDate;
+  public void setStartAt(Instant startAt) {
+    this.startAt = startAt;
   }
 
-  public LocalTime getStartTime() {
-    return startTime;
+  public Instant getEndAt() {
+    return endAt;
   }
 
-  public void setStartTime(LocalTime startTime) {
-    this.startTime = startTime;
-  }
-
-  public LocalTime getEndTime() {
-    return endTime;
-  }
-
-  public void setEndTime(LocalTime endTime) {
-    this.endTime = endTime;
+  public void setEndAt(Instant endAt) {
+    this.endAt = endAt;
   }
 
   public ShiftType getType() {

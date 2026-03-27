@@ -2,8 +2,7 @@ package dev.afduma.shiftplanner.shift.service;
 
 import dev.afduma.shiftplanner.common.exception.ConflictException;
 import dev.afduma.shiftplanner.shift.repository.ShiftRepository;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.Instant;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
 
@@ -16,15 +15,14 @@ public class ShiftValidationService {
     this.shiftRepository = shiftRepository;
   }
 
-  public void validateShiftTimes(LocalTime startTime, LocalTime endTime) {
-    if (!endTime.isAfter(startTime)) {
+  public void validateShiftRange(Instant startAt, Instant endAt) {
+    if (!endAt.isAfter(startAt)) {
       throw new ConflictException("Shift end time must be after start time");
     }
   }
 
-  public void ensureNoOverlap(
-      UUID userId, LocalDate shiftDate, LocalTime startTime, LocalTime endTime) {
-    if (shiftRepository.existsOverlappingShift(userId, shiftDate, startTime, endTime)) {
+  public void ensureNoOverlap(UUID userId, Instant startAt, Instant endAt) {
+    if (shiftRepository.existsOverlappingShift(userId, startAt, endAt)) {
       throw new ConflictException("Shift overlaps with an existing shift for this user");
     }
   }
