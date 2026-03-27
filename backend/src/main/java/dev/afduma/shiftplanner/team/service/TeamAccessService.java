@@ -1,6 +1,7 @@
 package dev.afduma.shiftplanner.team.service;
 
 import dev.afduma.shiftplanner.auth.service.AuthenticatedUser;
+import dev.afduma.shiftplanner.membership.model.TeamRole;
 import dev.afduma.shiftplanner.membership.repository.TeamMembershipRepository;
 import dev.afduma.shiftplanner.user.model.SystemRole;
 import java.util.List;
@@ -37,6 +38,29 @@ public class TeamAccessService {
     if (!hasMembership) {
       throw new AccessDeniedException("Access denied");
     }
+  }
+
+  public void requireMembershipManagementAccess(
+      AuthenticatedUser authenticatedUser, UUID teamId) {
+    if (isAdmin(authenticatedUser)) {
+      return;
+    }
+
+    TeamRole role =
+        teamMembershipRepository
+            .findRoleByUserIdAndTeamId(authenticatedUser.getUserId(), teamId)
+            .orElseThrow(() -> new AccessDeniedException("Access denied"));
+    if (role != TeamRole.LEAD && role != TeamRole.PLANNER) {
+      throw new AccessDeniedException("Access denied");
+    }
+  }
+
+  public void requireAdminOrSelf(AuthenticatedUser authenticatedUser, UUID userId) {
+    if (isAdmin(authenticatedUser) || authenticatedUser.getUserId().equals(userId)) {
+      return;
+    }
+
+    throw new AccessDeniedException("Access denied");
   }
 
   public List<UUID> visibleTeamIds(AuthenticatedUser authenticatedUser) {
