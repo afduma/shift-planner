@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { API_BASE_URL } from '../config/api.config';
-import { User } from '../models/user.model';
+import { User, UpdateUserRequest } from '../models/user.model';
 
 @Injectable({ providedIn: 'root' })
 export class UsersApiService {
@@ -19,5 +19,13 @@ export class UsersApiService {
 
   getUserById(id: string): Observable<User> {
     return this.http.get<User>(`${this.apiBaseUrl}/users/${id}`);
+  }
+
+  updateUser(id: string, request: UpdateUserRequest): Observable<User> {
+    return this.http.put<User>(`${this.apiBaseUrl}/users/${id}`, request);
+  }
+
+  deleteUser(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiBaseUrl}/users/${id}`);
   }
 }

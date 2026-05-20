@@ -5,6 +5,7 @@ import { DashboardComponent } from './features/dashboard/dashboard.component';
 import { TeamDetailComponent } from './features/teams/team-detail/team-detail.component';
 import { TeamsListComponent } from './features/teams/teams-list/teams-list.component';
 import { UserDetailComponent } from './features/users/user-detail/user-detail.component';
+import { UserEditComponent } from './features/users/user-edit/user-edit.component';
 import { UsersListComponent } from './features/users/users-list/users-list.component';
 import { ShellComponent } from './layout/shell/shell.component';
 
@@ -34,6 +35,10 @@ export const routes: Routes = [
       {
         path: 'users/:id',
         component: UserDetailComponent,
+      },
+      {
+        path: 'users/:id/edit',
+        component: UserEditComponent,
       },
       {
         path: 'teams',

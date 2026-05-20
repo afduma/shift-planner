@@ -35,8 +35,8 @@ public class UserService {
     ensureEmailAvailable(email, null);
 
     User user = new User();
-    applyRequest(
-        user, email, request.firstName(), request.lastName(), request.active(), request.systemRole());
+    user.setEmail(email);
+    applyRequest(user, request.firstName(), request.lastName(), request.active(), request.systemRole());
     return userRepository.save(user);
   }
 
@@ -65,10 +65,7 @@ public class UserService {
     requireAdmin(authenticatedUser);
 
     User user = getById(userId);
-    String email = normalizeEmail(request.email());
-    ensureEmailAvailable(email, userId);
-    applyRequest(
-        user, email, request.firstName(), request.lastName(), request.active(), request.systemRole());
+    applyRequest(user, request.firstName(), request.lastName(), request.active(), request.systemRole());
     return userRepository.save(user);
   }
 
@@ -86,13 +83,7 @@ public class UserService {
   }
 
   private void applyRequest(
-      User user,
-      String email,
-      String firstName,
-      String lastName,
-      boolean active,
-      SystemRole systemRole) {
-    user.setEmail(email);
+      User user, String firstName, String lastName, boolean active, SystemRole systemRole) {
     user.setFirstName(firstName.trim());
     user.setLastName(lastName.trim());
     user.setActive(active);

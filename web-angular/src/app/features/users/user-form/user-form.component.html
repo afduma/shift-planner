@@ -1,0 +1,75 @@
+<section class="page">
+  <div class="page-header">
+    <p class="eyebrow">Users</p>
+    <h1>{{ title() }}</h1>
+    @if (description()) {
+      <p class="page-copy">{{ description() }}</p>
+    }
+  </div>
+
+  <div class="card">
+    <form class="user-form" [formGroup]="form" (ngSubmit)="onSubmit()">
+      <label>
+        <span>Email</span>
+        <input
+          type="email"
+          formControlName="email"
+          autocomplete="email"
+          [readOnly]="emailReadonly()"
+          [attr.aria-readonly]="emailReadonly()"
+        />
+      </label>
+      @if (form.controls.email.touched && form.controls.email.invalid) {
+        <p class="field-error">Enter a valid email address.</p>
+      }
+
+      <div class="name-grid">
+        <div>
+          <label>
+            <span>First name</span>
+            <input type="text" formControlName="firstName" autocomplete="given-name" />
+          </label>
+          @if (form.controls.firstName.touched && form.controls.firstName.invalid) {
+            <p class="field-error">First name is required.</p>
+          }
+        </div>
+
+        <div>
+          <label>
+            <span>Last name</span>
+            <input type="text" formControlName="lastName" autocomplete="family-name" />
+          </label>
+          @if (form.controls.lastName.touched && form.controls.lastName.invalid) {
+            <p class="field-error">Last name is required.</p>
+          }
+        </div>
+      </div>
+
+      <div class="name-grid">
+        <label>
+          <span>System role</span>
+          <select formControlName="systemRole">
+            @for (role of systemRoles; track role) {
+              <option [value]="role">{{ role }}</option>
+            }
+          </select>
+        </label>
+
+        <label class="checkbox-field">
+          <input type="checkbox" formControlName="active" />
+          <span>Active user</span>
+        </label>
+      </div>
+
+      @if (errorMessage()) {
+        <p class="form-error">{{ errorMessage() }}</p>
+      }
+
+      <div class="form-actions">
+        <button type="submit" [disabled]="isSubmitting()">
+          {{ isSubmitting() ? 'Saving...' : submitLabel() }}
+        </button>
+      </div>
+    </form>
+  </div>
+</section>

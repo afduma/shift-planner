@@ -8,3 +8,10 @@ export interface User {
   active: boolean;
   systemRole: SystemRole;
 }
+
+export interface UpdateUserRequest {
+  firstName: string;
+  lastName: string;
+  active: boolean;
+  systemRole: SystemRole;
+}
