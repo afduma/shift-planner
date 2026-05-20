@@ -1,35 +1,53 @@
 # Shift Planner
 
-A Spring Boot application for managing teams, memberships, and employee schedules, designed for extensibility and future frontend integration.
+Shift Planner is a scheduling and team management project built around a shared Spring Boot backend and frontend clients. This repository is intended to hold the core API plus multiple frontend implementations over time.
+
+## Repository Layout
+
+- `backend/` - Spring Boot REST API, database migrations, security, and business logic
+- `web-angular/` - Angular frontend example
+
+Additional frontend clients can be added later as separate modules alongside `web-angular/`.
 
 ## Current Capabilities
 
 - JWT-based authentication
 - User management
-- Team management with role-based team permissions
-- Shift creation and updates with validation
-- Interactive API documentation via Swagger UI
+- Team management and memberships
+- Shift management in the backend API
+- Swagger UI for API exploration
 
 ## Tech Stack
 
-- Java 25
-- Spring Boot 4
-- Spring Security
-- Spring Data JPA
-- PostgreSQL + Flyway
-- springdoc OpenAPI / Swagger UI
-- JUnit, Mockito, Testcontainers
-- Docker Compose
+- Backend: Java 25, Spring Boot 4, Spring Security, Spring Data JPA, PostgreSQL, Flyway
+- Frontend example: Angular 21, standalone components, Angular Router, Reactive Forms
+- Tooling: Docker Compose, Vitest, JUnit, Mockito, Testcontainers
 
 ## Getting Started
 
-1. Create a root `.env` file with database and JWT settings (you can start from [.env.example](./.env.example)).
-2. Run `docker compose up --build`.
-3. Open Swagger UI and log in with the [seeded admin](./backend/README.md#default-local-admin-account) account.
+1. Create a root `.env` file from [.env.example](./.env.example).
+2. Start the local stack from the repository root:
 
-For more details about the backend setup, see [backend/README.md](./backend/README.md).
+```bash
+docker compose up --build
+```
 
-Useful URLs:
+3. Use the backend directly through Swagger UI or run a frontend client separately.
 
-- API base URL: `http://localhost:8080`
+Useful local URLs:
+
+- Backend API: `http://localhost:8080`
 - Swagger UI: `http://localhost:8080/swagger-ui/index.html`
+- Angular frontend: `http://localhost:4200`
+
+## Module Readmes
+
+- Backend setup and API details: [backend/README.md](./backend/README.md)
+- Angular frontend setup: [web-angular/README.md](./web-angular/README.md)
+
+## Default Local Admin Account
+
+- Email: `admin@shiftplanner.local`
+- Password: `admin123`
+
+Use these credentials in Swagger or in any local frontend client connected to the backend.
