@@ -1,0 +1,44 @@
+<section class="login-page">
+  <div class="login-card">
+    <div class="intro">
+      <p class="eyebrow">Shift Planner</p>
+      <h1>Sign in to manage schedules and teams.</h1>
+    </div>
+
+    <form class="login-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <label>
+        <span>Email</span>
+        <input
+          type="email"
+          formControlName="email"
+          placeholder="admin@shiftplanner.local"
+          autocomplete="email"
+        />
+      </label>
+      @if (loginForm.controls.email.touched && loginForm.controls.email.invalid) {
+        <p class="field-error">Enter a valid email address.</p>
+      }
+
+      <label>
+        <span>Password</span>
+        <input
+          type="password"
+          formControlName="password"
+          placeholder="admin123"
+          autocomplete="current-password"
+        />
+      </label>
+      @if (loginForm.controls.password.touched && loginForm.controls.password.invalid) {
+        <p class="field-error">Password is required.</p>
+      }
+
+      @if (errorMessage()) {
+        <p class="form-error">{{ errorMessage() }}</p>
+      }
+
+      <button type="submit" [disabled]="isSubmitting()">
+        {{ isSubmitting() ? 'Signing in...' : 'Sign in' }}
+      </button>
+    </form>
+  </div>
+</section>

@@ -1,0 +1,26 @@
+<section class="page">
+  <div class="page-header">
+    <p class="eyebrow">Teams</p>
+    <h1>Teams and ownership</h1>
+  </div>
+
+  <div class="card">
+    @if (isLoading()) {
+      <p class="empty-state">Loading teams...</p>
+    } @else if (errorMessage()) {
+      <p class="empty-state">{{ errorMessage() }}</p>
+    } @else if (teams().length === 0) {
+      <p class="empty-state">No teams returned by the backend.</p>
+    } @else {
+      <div class="team-grid">
+        @for (team of teams(); track team.id) {
+          <a class="team-card" [routerLink]="['/teams', team.id]">
+            <h2>{{ team.name }}</h2>
+            <p>{{ team.description || 'No description provided yet.' }}</p>
+            <span>{{ team.active ? 'Active' : 'Inactive' }}</span>
+          </a>
+        }
+      </div>
+    }
+  </div>
+</section>

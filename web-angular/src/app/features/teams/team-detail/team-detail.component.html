@@ -1,0 +1,20 @@
+<section class="page">
+  <a class="back-link" routerLink="/teams">Back to teams</a>
+
+  <div class="card">
+    @if (errorMessage()) {
+      <p class="empty-state">{{ errorMessage() }}</p>
+    } @else if (team(); as currentTeam) {
+      <p class="eyebrow">Team detail</p>
+      <h1>{{ currentTeam.name }}</h1>
+      <p class="description">
+        {{ currentTeam.description || 'No description available for this team yet.' }}
+      </p>
+      <p class="status">Status: {{ currentTeam.active ? 'Active' : 'Inactive' }}</p>
+
+      <app-team-members [members]="memberships()"></app-team-members>
+    } @else {
+      <p class="empty-state">Loading team...</p>
+    }
+  </div>
+</section>
