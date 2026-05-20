@@ -73,7 +73,6 @@ class UserControllerIntegrationTest extends IntegrationTest {
                 .content(
                     """
                     {
-                      "email": "worker1-updated@shiftplanner.local",
                       "firstName": "Worker",
                       "lastName": "Updated",
                       "active": false,
@@ -81,7 +80,8 @@ class UserControllerIntegrationTest extends IntegrationTest {
                     }
                     """))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.email").value("worker1-updated@shiftplanner.local"))
+        .andExpect(jsonPath("$.email").value("worker1@shiftplanner.local"))
+        .andExpect(jsonPath("$.lastName").value("Updated"))
         .andExpect(jsonPath("$.active").value(false));
   }
 }

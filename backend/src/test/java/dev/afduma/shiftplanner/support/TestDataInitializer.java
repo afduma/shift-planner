@@ -1,63 +1,62 @@
-package dev.afduma.shiftplanner.auth.service;
+package dev.afduma.shiftplanner.support;
 
 import dev.afduma.shiftplanner.auth.model.IdentityProvider;
 import dev.afduma.shiftplanner.auth.model.UserIdentity;
 import dev.afduma.shiftplanner.auth.repository.UserIdentityRepository;
+import dev.afduma.shiftplanner.auth.service.UserAuthenticationService;
 import dev.afduma.shiftplanner.user.model.SystemRole;
 import dev.afduma.shiftplanner.user.model.User;
 import dev.afduma.shiftplanner.user.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.core.annotation.Order;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component
-@Order(1)
-public class AdminUserInitializer implements CommandLineRunner {
+@Profile("test")
+public class TestDataInitializer implements CommandLineRunner {
 
   private static final String ADMIN_EMAIL = "admin@shiftplanner.local";
+  private static final String ADMIN_PASSWORD = "admin123";
 
   private final UserRepository userRepository;
   private final UserIdentityRepository userIdentityRepository;
-  private final PasswordEncoder passwordEncoder;
   private final UserAuthenticationService userAuthenticationService;
+  private final PasswordEncoder passwordEncoder;
 
-  public AdminUserInitializer(
+  public TestDataInitializer(
       UserRepository userRepository,
       UserIdentityRepository userIdentityRepository,
-      PasswordEncoder passwordEncoder,
-      UserAuthenticationService userAuthenticationService) {
+      UserAuthenticationService userAuthenticationService,
+      PasswordEncoder passwordEncoder) {
     this.userRepository = userRepository;
     this.userIdentityRepository = userIdentityRepository;
-    this.passwordEncoder = passwordEncoder;
     this.userAuthenticationService = userAuthenticationService;
+    this.passwordEncoder = passwordEncoder;
   }
 
   @Override
   @Transactional
   public void run(String... args) {
     String normalizedEmail = userAuthenticationService.normalizeSubject(ADMIN_EMAIL);
-    if (userIdentityRepository
-        .findByProviderAndSubject(IdentityProvider.LOCAL, normalizedEmail)
-        .isPresent()) {
-      return;
-    }
+    User admin =
+        userRepository.findByEmailIgnoreCase(normalizedEmail).orElseGet(() -> createAdminUser(normalizedEmail));
 
-    User user =
-        userRepository.findByEmailIgnoreCase(normalizedEmail).orElseGet(() -> createAdminUser());
-
-    UserIdentity identity = new UserIdentity();
-    identity.setUser(user);
+    UserIdentity identity =
+        userIdentityRepository
+            .findByProviderAndSubject(IdentityProvider.LOCAL, normalizedEmail)
+            .orElseGet(UserIdentity::new);
+    identity.setUser(admin);
     identity.setProvider(IdentityProvider.LOCAL);
     identity.setSubject(normalizedEmail);
-    identity.setPasswordHash(passwordEncoder.encode("admin123"));
+    identity.setPasswordHash(passwordEncoder.encode(ADMIN_PASSWORD));
     userIdentityRepository.save(identity);
   }
 
-  private User createAdminUser() {
+  private User createAdminUser(String normalizedEmail) {
     User user = new User();
-    user.setEmail(userAuthenticationService.normalizeSubject(ADMIN_EMAIL));
+    user.setEmail(normalizedEmail);
     user.setFirstName("Admin");
     user.setLastName("User");
     user.setActive(true);

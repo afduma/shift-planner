@@ -13,6 +13,8 @@ public interface TeamMembershipRepository extends JpaRepository<TeamMembership, 
 
   boolean existsByUser_IdAndTeam_Id(UUID userId, UUID teamId);
 
+  Optional<TeamMembership> findByUser_IdAndTeam_Id(UUID userId, UUID teamId);
+
   Optional<TeamMembership> findByIdAndTeam_Id(UUID membershipId, UUID teamId);
 
   List<TeamMembership> findAllByTeam_IdOrderByCreatedAtAsc(UUID teamId);
