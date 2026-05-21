@@ -1,0 +1,106 @@
+.page {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.page-header h1 {
+  margin: 0.25rem 0 0.5rem;
+}
+
+.eyebrow {
+  margin: 0;
+  color: #2563eb;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.78rem;
+}
+
+.page-copy {
+  margin: 0;
+  color: #475569;
+}
+
+.card {
+  padding: 1.5rem;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+}
+
+.team-form {
+  display: grid;
+  gap: 1rem;
+}
+
+.team-form label {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.team-form span {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.team-form input,
+.team-form textarea {
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 14px;
+  padding: 0.85rem 1rem;
+  font: inherit;
+  background: #ffffff;
+}
+
+.team-form textarea {
+  resize: vertical;
+}
+
+.team-form input:focus,
+.team-form textarea:focus {
+  outline: 2px solid rgba(37, 99, 235, 0.22);
+  border-color: #2563eb;
+}
+
+.checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 14px;
+}
+
+.checkbox-field input {
+  width: auto;
+  margin: 0;
+}
+
+.field-error,
+.form-error {
+  margin: -0.25rem 0 0;
+  color: #b91c1c;
+  font-size: 0.92rem;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.form-actions button {
+  border: 0;
+  border-radius: 14px;
+  padding: 0.9rem 1.1rem;
+  font: inherit;
+  font-weight: 700;
+  color: #eff6ff;
+  background: linear-gradient(135deg, #2563eb, #0891b2);
+  cursor: pointer;
+}
+
+.form-actions button:disabled {
+  opacity: 0.75;
+  cursor: progress;
+}

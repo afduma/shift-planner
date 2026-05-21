@@ -1,6 +1,7 @@
 package dev.afduma.shiftplanner.team.service;
 
 import dev.afduma.shiftplanner.auth.service.AuthenticatedUser;
+import dev.afduma.shiftplanner.common.exception.ConflictException;
 import dev.afduma.shiftplanner.common.exception.ResourceNotFoundException;
 import dev.afduma.shiftplanner.team.dto.CreateTeamRequest;
 import dev.afduma.shiftplanner.team.dto.UpdateTeamRequest;
@@ -8,6 +9,7 @@ import dev.afduma.shiftplanner.team.model.Team;
 import dev.afduma.shiftplanner.team.repository.TeamRepository;
 import java.util.List;
 import java.util.UUID;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,6 +59,19 @@ public class TeamService {
     Team team = getById(teamId);
     applyRequest(team, request.name(), request.description(), request.active());
     return teamRepository.save(team);
+  }
+
+  @Transactional
+  public void delete(AuthenticatedUser authenticatedUser, UUID teamId) {
+    teamAccessService.requireAdmin(authenticatedUser);
+
+    Team team = getById(teamId);
+    try {
+      teamRepository.delete(team);
+      teamRepository.flush();
+    } catch (DataIntegrityViolationException exception) {
+      throw new ConflictException("Team cannot be deleted because related records exist");
+    }
   }
 
   @Transactional(readOnly = true)

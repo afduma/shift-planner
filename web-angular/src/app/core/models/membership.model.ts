@@ -1,6 +1,6 @@
 import { User } from './user.model';
 
-export type MembershipRole = 'LEAD' | 'MEMBER';
+export type MembershipRole = 'LEAD' | 'PLANNER' | 'MEMBER';
 
 export interface Membership {
   id: string;
@@ -8,4 +8,13 @@ export interface Membership {
   userId: string;
   role: MembershipRole;
   user?: User;
+}
+
+export interface CreateMembershipRequest {
+  userId: string;
+  role: MembershipRole;
+}
+
+export interface UpdateMembershipRequest {
+  role: MembershipRole;
 }

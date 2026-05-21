@@ -1,6 +1,8 @@
 .team-members {
   padding-top: 1rem;
   border-top: 1px solid #e2e8f0;
+  display: grid;
+  gap: 1rem;
 }
 
 .header h3,
@@ -13,10 +15,48 @@
   color: #64748b;
 }
 
+.membership-actions {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) 180px auto;
+  gap: 0.75rem;
+}
+
+select,
+button {
+  font: inherit;
+}
+
+select {
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 14px;
+  padding: 0.75rem 0.9rem;
+  background: #ffffff;
+}
+
+button {
+  border: 0;
+  border-radius: 14px;
+  padding: 0.8rem 1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.membership-actions button {
+  color: #eff6ff;
+  background: linear-gradient(135deg, #2563eb, #0891b2);
+}
+
+.form-error {
+  margin: 0;
+  color: #b91c1c;
+  font-size: 0.92rem;
+}
+
 ul {
   list-style: none;
   padding: 0;
-  margin: 1rem 0 0;
+  margin: 0;
   display: grid;
   gap: 0.75rem;
 }
@@ -25,7 +65,53 @@ li {
   display: flex;
   justify-content: space-between;
   gap: 1rem;
-  padding: 0.85rem 1rem;
+  padding: 0.9rem 1rem;
   border-radius: 14px;
   background: #f8fafc;
+}
+
+.member-summary {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.member-summary span {
+  color: #64748b;
+  font-size: 0.95rem;
+}
+
+.member-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.secondary-action {
+  color: #eff6ff;
+  background: #2563eb;
+}
+
+.danger-action {
+  color: #991b1b;
+  background: #fee2e2;
+}
+
+button:disabled,
+select:disabled {
+  opacity: 0.75;
+  cursor: progress;
+}
+
+@media (max-width: 860px) {
+  .membership-actions {
+    grid-template-columns: 1fr;
+  }
+
+  li {
+    flex-direction: column;
+  }
+
+  .member-actions {
+    flex-wrap: wrap;
+  }
 }

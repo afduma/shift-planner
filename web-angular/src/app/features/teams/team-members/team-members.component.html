@@ -1,0 +1,80 @@
+<section class="team-members">
+  <div class="header">
+    <div>
+      <h3>Members</h3>
+      <p>Assign users to teams and manage their team-level roles.</p>
+    </div>
+  </div>
+
+  <div class="membership-actions">
+    <select #userSelect>
+      <option value="">Select a user</option>
+      @for (user of availableUsers(); track user.id) {
+        <option [value]="user.id">{{ user.firstName }} {{ user.lastName }} ({{ user.email }})</option>
+      }
+    </select>
+
+    <select #roleSelect>
+      @for (role of roles; track role) {
+        <option [value]="role">{{ role }}</option>
+      }
+    </select>
+
+    <button
+      type="button"
+      [disabled]="isSaving()"
+      (click)="addMembership(userSelect.value, roleSelect.value)"
+    >
+      Add member
+    </button>
+  </div>
+
+  @if (errorMessage()) {
+    <p class="form-error">{{ errorMessage() }}</p>
+  }
+
+  @if (members().length === 0) {
+    <p class="empty-state">No membership data loaded yet.</p>
+  } @else {
+    <ul>
+      @for (member of members(); track member.id) {
+        <li>
+          <div class="member-summary">
+            <strong>{{ member.user?.firstName }} {{ member.user?.lastName }}</strong>
+            <span>{{ member.user?.email }}</span>
+          </div>
+
+          <div class="member-actions">
+            <select
+              #memberRoleSelect
+              [value]="member.role"
+              [disabled]="isSaving()"
+            >
+              @for (role of roles; track role) {
+                <option [value]="role">{{ role }}</option>
+              }
+            </select>
+
+            <button
+              type="button"
+              class="secondary-action"
+              [disabled]="isSaving()"
+              (click)="saveMembershipRole(member.id, memberRoleSelect.value)"
+            >
+              Save
+            </button>
+
+            <button
+              type="button"
+              class="danger-action"
+              [disabled]="isSaving()"
+              (click)="deleteMembership.emit(member.id)"
+            >
+              Remove
+            </button>
+          </div>
+        </li>
+      }
+    </ul>
+  }
+</section>

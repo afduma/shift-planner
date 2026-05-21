@@ -1,0 +1,44 @@
+<section class="page">
+  <div class="page-header">
+    <p class="eyebrow">Teams</p>
+    <h1>{{ title() }}</h1>
+    @if (descriptionText()) {
+      <p class="page-copy">{{ descriptionText() }}</p>
+    }
+  </div>
+
+  <div class="card">
+    <form class="team-form" [formGroup]="form" (ngSubmit)="onSubmit()">
+      <label>
+        <span>Name</span>
+        <input type="text" formControlName="name" />
+      </label>
+      @if (form.controls.name.touched && form.controls.name.invalid) {
+        <p class="field-error">Team name is required.</p>
+      }
+
+      <label>
+        <span>Description</span>
+        <textarea rows="5" formControlName="description"></textarea>
+      </label>
+      @if (form.controls.description.touched && form.controls.description.invalid) {
+        <p class="field-error">Description is too long.</p>
+      }
+
+      <label class="checkbox-field">
+        <input type="checkbox" formControlName="active" />
+        <span>Active team</span>
+      </label>
+
+      @if (errorMessage()) {
+        <p class="form-error">{{ errorMessage() }}</p>
+      }
+
+      <div class="form-actions">
+        <button type="submit" [disabled]="isSubmitting()">
+          {{ isSubmitting() ? 'Saving...' : submitLabel() }}
+        </button>
+      </div>
+    </form>
+  </div>
+</section>

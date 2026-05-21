@@ -2,7 +2,9 @@ import { Routes } from '@angular/router';
 import { authGuard } from './core/auth/auth.guard';
 import { LoginComponent } from './features/auth/login/login.component';
 import { DashboardComponent } from './features/dashboard/dashboard.component';
+import { TeamCreateComponent } from './features/teams/team-create/team-create.component';
 import { TeamDetailComponent } from './features/teams/team-detail/team-detail.component';
+import { TeamEditComponent } from './features/teams/team-edit/team-edit.component';
 import { TeamsListComponent } from './features/teams/teams-list/teams-list.component';
 import { UserDetailComponent } from './features/users/user-detail/user-detail.component';
 import { UserEditComponent } from './features/users/user-edit/user-edit.component';
@@ -45,8 +47,16 @@ export const routes: Routes = [
         component: TeamsListComponent,
       },
       {
+        path: 'teams/new',
+        component: TeamCreateComponent,
+      },
+      {
         path: 'teams/:id',
         component: TeamDetailComponent,
+      },
+      {
+        path: 'teams/:id/edit',
+        component: TeamEditComponent,
       },
       {
         path: '**',

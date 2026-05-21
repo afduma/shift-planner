@@ -5,14 +5,32 @@
     @if (errorMessage()) {
       <p class="empty-state">{{ errorMessage() }}</p>
     } @else if (team(); as currentTeam) {
-      <p class="eyebrow">Team detail</p>
-      <h1>{{ currentTeam.name }}</h1>
+      <div class="page-header">
+        <div>
+          <p class="eyebrow">Team detail</p>
+          <h1>{{ currentTeam.name }}</h1>
+        </div>
+        <div class="page-actions">
+          <a class="primary-action" [routerLink]="['/teams', currentTeam.id, 'edit']">Edit team</a>
+          <button type="button" class="danger-action" [disabled]="isDeletingTeam()" (click)="deleteTeam(currentTeam)">
+            {{ isDeletingTeam() ? 'Deleting...' : 'Delete team' }}
+          </button>
+        </div>
+      </div>
       <p class="description">
         {{ currentTeam.description || 'No description available for this team yet.' }}
       </p>
       <p class="status">Status: {{ currentTeam.active ? 'Active' : 'Inactive' }}</p>
 
-      <app-team-members [members]="memberships()"></app-team-members>
+      <app-team-members
+        [members]="memberships()"
+        [availableUsers]="users()"
+        [isSaving]="isSavingMembership()"
+        [errorMessage]="membershipErrorMessage()"
+        (createMembership)="createMembership($event)"
+        (updateMembership)="updateMembership($event)"
+        (deleteMembership)="deleteMembership($event)"
+      ></app-team-members>
     } @else {
       <p class="empty-state">Loading team...</p>
     }
